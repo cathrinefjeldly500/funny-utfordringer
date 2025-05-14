@@ -84,18 +84,26 @@
       document.getElementById("completed").innerText = "";
     }
 
-    function addPoeng(name) {
+   function addPoeng(name) {
   const ref = database.ref('poeng/' + name);
 
-  ref.get().then((snapshot) => {
+  ref.once('value').then((snapshot) => {
     let currentPoeng = snapshot.exists() ? snapshot.val() : 0;
     currentPoeng += 1;
 
     ref.set(currentPoeng).then(() => {
       document.getElementById(name + "Poeng").innerText = `${name}: ${currentPoeng}`;
+
       if (currentPoeng % 10 === 0 && currentPoeng <= 100) {
-  alert(`Yay, ${name}, du har nådd ${currentPoeng} poeng din skitne søte! 🥳\n\nPremie: Du kan velge mellom 1 Pepsi eller 10 minutters massasje fra en av de andre spillerne 😈`);
-}
+        alert(`Yay, ${name}, du har nådd ${currentPoeng} poeng din skitne søte! 🥳\n\nPremie: Du kan velge mellom 1 Pepsi eller 10 minutters massasje fra en av de andre spillerne 😈`);
+
+        confetti({
+          particleCount: 200,
+          spread: 100,
+          origin: { y: 0.6 }
+        });
+      }
+
       document.getElementById("completed").innerText = `Godt jobbet lille skitne. Nå fortjener du en kjeks.`;
     });
   });
