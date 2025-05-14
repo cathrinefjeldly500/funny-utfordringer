@@ -101,13 +101,13 @@
   });
 }
 
-    window.onload = function () {
+   window.onload = function () {
   const names = ["Lene", "Tiril", "Cath"];
 
   names.forEach(name => {
     const ref = database.ref('poeng/' + name);
 
-    ref.get().then(snapshot => {
+    ref.on('value', snapshot => {
       let currentPoeng = snapshot.exists() ? snapshot.val() : 0;
       document.getElementById(name + "Poeng").innerText = `${name}: ${currentPoeng}`;
     });
